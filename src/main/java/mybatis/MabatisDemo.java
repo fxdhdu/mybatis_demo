@@ -8,6 +8,7 @@ import org.apache.ibatis.session.SqlSessionFactoryBuilder;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.Random;
 
 /**
  * @author fxd
@@ -29,7 +30,13 @@ public class MabatisDemo {
             BlogMapper mapper = session.getMapper(BlogMapper.class);
             blog = mapper.selectBlog(2);
             System.out.println("id:"+blog.getId()+" name:"+blog.getName());
+
+            Random rd = new Random(System.currentTimeMillis());
+            mapper.updateBlog(1, String.valueOf(rd.nextInt()%100));
+            blog = mapper.selectBlog(1);
+            System.out.println("id:"+blog.getId()+" name:"+blog.getName());
         } finally {
+            session.commit();
             session.close();
         }
 
